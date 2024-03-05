@@ -6,7 +6,7 @@
     },
     "exported_at": "2024-03-05T05:25:26+02:00",
     "name": "CSS-Panel",
-    "author": "shinxz / contact@csspanel.dev",
+    "author": "contact@csspanel.dev",
     "description": "Host a CSS-Panel application easily!\n\nPlease follow the documentation in order to connect a domain.\nhttps://csspanel.dev/docs/quickstart",
     "features": null,
     "docker_images": {
