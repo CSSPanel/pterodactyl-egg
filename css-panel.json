@@ -1,0 +1,52 @@
+{
+    "_comment": "DO NOT EDIT: FILE GENERATED AUTOMATICALLY BY PTERODACTYL PANEL - PTERODACTYL.IO",
+    "meta": {
+        "version": "PTDL_v2",
+        "update_url": null
+    },
+    "exported_at": "2024-03-05T05:25:26+02:00",
+    "name": "CSS-Panel",
+    "author": "shinxz / contact@csspanel.dev",
+    "description": "Host a CSS-Panel application easily!\n\nPlease follow the documentation in order to connect a domain.\nhttps://csspanel.dev/docs/quickstart",
+    "features": null,
+    "docker_images": {
+        "Nodejs 20": "ghcr.io\/parkervcp\/yolks:nodejs_20"
+    },
+    "file_denylist": [],
+    "startup": "if [ ! \"$(ls -A \/home\/container)\" ]; then echo -e \"\/home\/container is empty.\\ncloning files into repo\"; git clone ${GIT_URL} \/home\/container; else echo -e \"\/home\/container directory is not empty.\"; cd \/home\/container; if [ -d .git ]; then echo -e \".git directory exists\"; git reset --hard; git fetch origin; git checkout main; git stash push --include-untracked; git stash drop; git pull origin main; else echo -e \"Not a git repository. Removing existing files and cloning again.\"; rm -rf \/home\/container\/* \/home\/container\/.* 2>\/dev\/null; if [ -n \"${USERNAME}\" ] && [ -n \"${ACCESS_TOKEN}\" ]; then GIT_URL=\"https:\/\/${USERNAME}:${ACCESS_TOKEN}@$(echo -e ${GIT_URL} | cut -d\/ -f3-)\"; fi; git clone ${GIT_URL} \/home\/container; fi; fi; if [ -f \/home\/container\/package.json ]; then \/usr\/local\/bin\/npm install; fi; \/usr\/local\/bin\/npx next start -p {{SERVER_PORT}}",
+    "config": {
+        "files": "{}",
+        "startup": "{\r\n    \"done\": \"\\u25b2 Next.js\"\r\n}",
+        "logs": "{}",
+        "stop": "^^C"
+    },
+    "scripts": {
+        "installation": {
+            "script": "#!\/bin\/bash\r\n# Copied from NodeJS App Installation Script\r\n#\r\n# Server Files: \/mnt\/server\r\napt update\r\napt install -y git curl jq file unzip make gcc g++ python python-dev libtool\r\n\r\nmkdir -p \/mnt\/server\r\ncd \/mnt\/server\r\n\r\n## Check if the directory is empty or not\r\nif [ ! \"$(ls -A \/mnt\/server)\" ]; then\r\n    echo -e \"\/mnt\/server is empty.\\ncloning files into repo\"\r\n\r\n    git clone ${GIT_URL} .\r\n   \r\nelse\r\n    echo -e \"\/mnt\/server directory is not empty.\"\r\n    cd \/mnt\/server\r\n    # Check if it's a Git repository\r\n    if [ -d .git ]; then\r\n        echo -e \".git directory exists\"\r\n        # Reset the changes to avoid conflicts\r\n        git reset --hard\r\n        # Fetch the latest changes\r\n        git fetch origin\r\n        # Checkout the desired branch\r\n        git checkout ${GIT_BRANCH}\r\n        # Pull the latest changes\r\n        git pull origin ${GIT_BRANCH}\r\n    else\r\n        echo -e \"Not a git repository. Removing existing files and cloning again.\"\r\n        rm -rf \/mnt\/server\/* \/mnt\/server\/.* 2>\/dev\/null\r\n        git clone ${GIT_URL} .\r\n    fi\r\nfi\r\n\r\nif [ -f \/mnt\/server\/package.json ]; then\r\n    \/usr\/local\/bin\/npm install --production\r\nfi\r\n\r\necho -e \"install complete!\\nplease follow the docs in order to connect a domain\"\r\nexit 0",
+            "container": "node:18-bullseye-slim",
+            "entrypoint": "bash"
+        }
+    },
+    "variables": [
+        {
+            "name": "Git Repository URL",
+            "description": "",
+            "env_variable": "GIT_URL",
+            "default_value": "https:\/\/github.com\/CSSPanel\/panel.git",
+            "user_viewable": true,
+            "user_editable": false,
+            "rules": "required|string",
+            "field_type": "text"
+        },
+        {
+            "name": "Auto Update",
+            "description": "Auto update the panel? (recommended)",
+            "env_variable": "AUTO_UPDATE",
+            "default_value": "1",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|boolean",
+            "field_type": "text"
+        }
+    ]
+}
